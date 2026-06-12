@@ -1,0 +1,24 @@
+{
+  "type": "record",
+  "name": "CustomerSessionEvent",
+  "namespace": "com.zenika.clickstream.avro",
+  "doc": "Customer session clickstream event.",
+  "fields": [
+    {
+      "name": "customerId",
+      "type": "string"
+    },
+    {
+      "name": "eventType",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "name": "metadata",
+      "type": "string"
+    }
+  ]
+}
