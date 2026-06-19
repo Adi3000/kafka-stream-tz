@@ -1,9 +1,7 @@
 package com.zenika.clickstream.kafkastream;
 
-import com.zenika.clickstream.KafkaStreamConfiguration;
+import com.zenika.clickstream.kafkastream.config.KafkaStreamConfiguration;
 import com.zenika.clickstream.avro.CustomerSessionEvent;
-import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
-import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -15,7 +13,6 @@ import org.apache.kafka.streams.kstream.Produced;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Properties;
 
 public class FilterEventToTopic implements Runnable , AutoCloseable {
 
@@ -26,9 +23,22 @@ public class FilterEventToTopic implements Runnable , AutoCloseable {
 
     private final KafkaStreamConfiguration kafkaStreamConfiguration;
     private KafkaStreams streams;
+    private Serde<CustomerSessionEvent> serdes;
 
     public FilterEventToTopic(){
         this.kafkaStreamConfiguration = new KafkaStreamConfiguration();
+        this.serdes = kafkaStreamConfiguration.getCustomerSessionEventSerdes();
+    }
+
+
+    Topology buildTopology() {
+        StreamsBuilder builder = new StreamsBuilder();
+
+        builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), serdes))
+                .filter((_, event) -> isLookupProduct(event))
+                .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), serdes));
+
+        return builder.build();
     }
 
     @Override
@@ -37,17 +47,6 @@ public class FilterEventToTopic implements Runnable , AutoCloseable {
 
         configureGracefulStop();
         streams.start();
-    }
-
-    Topology buildTopology() {
-        StreamsBuilder builder = new StreamsBuilder();
-        Serde<CustomerSessionEvent> serdes = kafkaStreamConfiguration.getCustomerSessionEventSerdes();
-
-        builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), serdes))
-                .filter((_, event) -> isLookupProduct(event))
-                .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), serdes));
-
-        return builder.build();
     }
 
     private boolean isLookupProduct(CustomerSessionEvent event) {

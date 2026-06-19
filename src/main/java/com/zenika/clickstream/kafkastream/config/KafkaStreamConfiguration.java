@@ -1,9 +1,8 @@
-package com.zenika.clickstream;
+package com.zenika.clickstream.kafkastream.config;
 
 import com.zenika.clickstream.avro.CustomerSessionEvent;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;

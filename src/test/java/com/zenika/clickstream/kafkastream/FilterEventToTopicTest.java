@@ -3,7 +3,7 @@ package com.zenika.clickstream.kafkastream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.zenika.clickstream.KafkaStreamConfiguration;
+import com.zenika.clickstream.kafkastream.config.KafkaStreamConfiguration;
 import com.zenika.clickstream.avro.CustomerSessionEvent;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import java.util.Map;
