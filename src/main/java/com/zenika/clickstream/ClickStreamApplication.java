@@ -1,20 +1,20 @@
 package com.zenika.clickstream;
 
-import com.zenika.clickstream.kafkastream.FilterEventToTopic;
+import com.zenika.clickstream.kafkastream.EnrichSessionWithProductInfo;
 
 public final class ClickStreamApplication {
 
-    private static final String STREAM_THREAD_NAME = "FilterEventKafkaStreams";
+    private static final String STREAM_THREAD_NAME = "CustomerSessionProductTagsKafkaStreams";
 
     private ClickStreamApplication() {
     }
 
     public static void main(String[] args) {
-        FilterEventToTopic filterEventToTopic = new FilterEventToTopic();
+        EnrichSessionWithProductInfo topology = new EnrichSessionWithProductInfo();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(filterEventToTopic::close, STREAM_THREAD_NAME + "-shutdown"));
+        Runtime.getRuntime().addShutdownHook(new Thread(topology::close, STREAM_THREAD_NAME + "-shutdown"));
 
-        Thread streamThread = new Thread(filterEventToTopic, STREAM_THREAD_NAME);
+        Thread streamThread = new Thread(topology, STREAM_THREAD_NAME);
         streamThread.start();
     }
 }

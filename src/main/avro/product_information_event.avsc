@@ -1,0 +1,20 @@
+{
+  "type": "record",
+  "name": "ProductInformationEvent",
+  "namespace": "com.zenika.clickstream.avro",
+  "doc": "Product information enriched with tags.",
+  "fields": [
+    {
+      "name": "productId",
+      "type": "string"
+    },
+    {
+      "name": "tags",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": []
+    }
+  ]
+}

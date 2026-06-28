@@ -1,0 +1,28 @@
+{
+  "type": "record",
+  "name": "CustomerSessionProductTagsEvent",
+  "namespace": "com.zenika.clickstream.avro",
+  "doc": "Lookup product customer session enriched with product tags.",
+  "fields": [
+    {
+      "name": "sessionId",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "name": "productId",
+      "type": "string"
+    },
+    {
+      "name": "tags",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": []
+    }
+  ]
+}
